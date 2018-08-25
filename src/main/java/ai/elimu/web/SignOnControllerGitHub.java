@@ -73,11 +73,11 @@ public class SignOnControllerGitHub {
         if (EnvironmentContextLoaderListener.env == Environment.TEST) {
             apiKey = "57aad0f85f09ef18d8e6";
             apiSecret = ConfigHelper.getProperty("github.api.secret");
-            baseUrl = "http://" + request.getServerName();
+            baseUrl = String.format("%s://%s", request.getScheme(), request.getServerName());
         } else if (EnvironmentContextLoaderListener.env == Environment.PROD) {
             apiKey = "7018e4e57438eb0191a7";
             apiSecret = ConfigHelper.getProperty("github.api.secret");
-            baseUrl = "http://" + request.getServerName();
+            baseUrl = String.format("%s://%s", request.getScheme(), request.getServerName());
         }
         
         secretState = "secret_" + new Random().nextInt(999_999);

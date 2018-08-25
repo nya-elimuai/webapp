@@ -62,11 +62,11 @@ public class SignOnControllerFacebook {
         if (EnvironmentContextLoaderListener.env == Environment.TEST) {
             apiKey = "1130170237015885";
             apiSecret = ConfigHelper.getProperty("facebook.api.secret");
-            baseUrl = "http://" + request.getServerName();
+            baseUrl = String.format("%s://%s", request.getScheme(), request.getServerName());
         } else if (EnvironmentContextLoaderListener.env == Environment.PROD) {
             apiKey = "1130160227016886";
             apiSecret = ConfigHelper.getProperty("facebook.api.secret");
-            baseUrl = "http://" + request.getServerName();
+            baseUrl = String.format("%s://%s", request.getScheme(), request.getServerName());
         }
 
         oAuth20Service = new ServiceBuilder()

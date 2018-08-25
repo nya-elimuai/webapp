@@ -26,12 +26,12 @@
                 <meta name="description" content="<fmt:message key='free.quality.education.for.every.child' />" />
                 <link rel="shortcut icon" href="<spring:url value='/static/img/favicon.ico' />" />
 
-                <meta property="og:image" content="http://${pageContext.request.serverName}/static/img/logo-256x256.png" />
-                <meta property="twitter:image" content="http://${pageContext.request.serverName}/static/img/logo-256x256.png" />
+                <meta property="og:image" content="//${pageContext.request.serverName}/static/img/logo-256x256.png" />
+                <meta property="twitter:image" content="//${pageContext.request.serverName}/static/img/logo-256x256.png" />
 
                 <%-- CSS --%>
-                <link rel="stylesheet" href="http://fonts.googleapis.com/icon?family=Material+Icons" />
-                <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Amaranth" />
+                <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+                <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Amaranth" />
                 <%--<link rel="stylesheet" href="<spring:url value='/static/css/materialize.min-0.97.6.css' />" />--%>
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css" />
                 <link rel="stylesheet" href="<spring:url value='/static/css/styles.css?version=' /><content:getversion />" />

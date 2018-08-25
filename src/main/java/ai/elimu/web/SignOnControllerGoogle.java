@@ -65,11 +65,11 @@ public class SignOnControllerGoogle {
         if (EnvironmentContextLoaderListener.env == Environment.TEST) {
             apiKey = "108974530651-fskde869tac7imherk2k516shfuvij76.apps.googleusercontent.com";
             apiSecret = ConfigHelper.getProperty("google.api.secret");
-            baseUrl = "http://" + request.getServerName();
+            baseUrl = String.format("%s://%s", request.getScheme(), request.getServerName());
         } else if (EnvironmentContextLoaderListener.env == Environment.PROD) {
             apiKey = "108974530651-k68pccps2jb88fllofpcf8ht356v08e4.apps.googleusercontent.com";
             apiSecret = ConfigHelper.getProperty("google.api.secret");
-            baseUrl = "http://" + request.getServerName();
+            baseUrl = String.format("%s://%s", request.getScheme(), request.getServerName());
         }
 
         oAuthService = new ServiceBuilder()
@@ -77,7 +77,7 @@ public class SignOnControllerGoogle {
                 .apiKey(apiKey)
                 .apiSecret(apiSecret)
                 .callback(baseUrl + "/sign-on/google/callback")
-                .scope("email https://www.googleapis.com/auth/plus.login") // https://developers.google.com/+/web/api/rest/oauth#login-scopes
+                .scope("email profile") // https://developers.google.com/+/web/api/rest/oauth#login-scopes
                 .build();
 
         logger.info("Fetching the Authorization URL...");
