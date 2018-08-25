@@ -2,6 +2,7 @@ package ai.elimu.rest.v1;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Base64;
 import ai.elimu.model.admin.Application;
 import ai.elimu.model.Device;
 import ai.elimu.model.Student;
@@ -184,6 +185,7 @@ public class JavaToGsonConverter {
             if (applicationVersion.getApplication().isBelongingToCustomProject()) {
                 applicationVersionGson.setFileUrl("/project-apk/" + applicationVersion.getApplication().getPackageName() + "-" + applicationVersion.getVersionCode() + ".apk");
             }
+            applicationVersionGson.setIcon(new String(Base64.getEncoder().encode(applicationVersion.getIcon())));
             applicationVersionGson.setChecksumMd5(applicationVersion.getChecksumMd5());
             applicationVersionGson.setContentType(applicationVersion.getContentType());
             applicationVersionGson.setVersionCode(applicationVersion.getVersionCode());
