@@ -47,7 +47,10 @@ public class DbMigrationHelper {
             // Perform missing DB migrations up until the current version
             
             DbMigration dbMigrationMostRecent = dbMigrations.get(0);
-            Integer versionOfMostRecentMigration = dbMigrationMostRecent.getVersion();
+            // TODO: HACK: This is a hack to make sure the latest migration is always run
+            // (It removes unique constraint from the the OneToMany/ManyToMany relationships.
+            // They're bugged in Hibernate-Core when using @OrderColumn)
+            Integer versionOfMostRecentMigration = dbMigrationMostRecent.getVersion() - 1;
             logger.info("versionOfMostRecentMigration: " + versionOfMostRecentMigration);
             
             if (versionOfMostRecentMigration < pomVersionAsInteger) {

@@ -9,3 +9,23 @@ body {
 .dragStarted {
     opacity: 0.5;
 }
+
+.sortable-placeholder {
+    border: 1px solid #039be5;
+}
+
+.section.row.sortable > .sortable-placeholder {
+    width: 100%;
+    margin-left: auto;
+    left: auto;
+    right: auto;
+    float: left;
+    box-sizing: border-box;
+}
+
+.appsSortable > .sortable-placeholder {
+    margin: 0.3em;
+    width: 200px;
+    display: inline-block;
+    height: 100% !important;
+}

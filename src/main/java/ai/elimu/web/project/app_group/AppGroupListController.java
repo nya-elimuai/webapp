@@ -3,15 +3,22 @@ package ai.elimu.web.project.app_group;
 import ai.elimu.dao.project.AppCategoryDao;
 import ai.elimu.dao.project.ProjectDao;
 import ai.elimu.model.project.AppCategory;
+import ai.elimu.model.project.AppGroup;
 import ai.elimu.model.project.Project;
+import ai.elimu.rest.service.project.ProjectJsonService;
 import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
+import java.util.List;
+import java.util.Collections;
+import java.util.Comparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/project/{projectId}/app-category/{appCategoryId}/app-group")
@@ -24,6 +31,9 @@ public class AppGroupListController {
     
     @Autowired
     private AppCategoryDao appCategoryDao;
+
+    @Autowired
+    private ProjectJsonService projectJsonService;
     
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String handlRequest(
@@ -43,5 +53,34 @@ public class AppGroupListController {
         model.addAttribute("appCategory", appCategory);
         
         return "project/app-group/list";
+    }
+
+    @RequestMapping(value = "/list", method = RequestMethod.POST)
+    @ResponseBody
+    public String handlePost(
+            HttpSession session,
+            @PathVariable Long projectId,
+            @PathVariable Long appCategoryId,
+            @RequestBody List<Long> idArray,
+            Model model
+    ) {
+        logger.info("handlePost");
+
+        AppCategory appCategory = appCategoryDao.read(appCategoryId);
+
+        List<AppGroup> appGroups = appCategory.getAppGroups();
+
+        Collections.sort(appGroups, new Comparator<AppGroup>(){
+            @Override
+            public int compare(AppGroup a, AppGroup b) {
+                return idArray.indexOf(a.getId()) - idArray.indexOf(b.getId());
+            }
+        });
+
+        appCategory.setAppGroups(appGroups);
+        appCategoryDao.update(appCategory);
+        projectJsonService.refreshApplicationsInAppCollection();
+
+        return "ok";
     }
 }
