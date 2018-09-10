@@ -1,6 +1,7 @@
 package ai.elimu.web.project.app_group;
 
 import ai.elimu.dao.project.AppCategoryDao;
+import ai.elimu.dao.project.AppGroupDao;
 import ai.elimu.dao.project.ProjectDao;
 import ai.elimu.model.project.AppCategory;
 import ai.elimu.model.project.AppGroup;
@@ -9,6 +10,7 @@ import ai.elimu.rest.service.project.ProjectJsonService;
 import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,9 @@ public class AppGroupListController {
     
     @Autowired
     private AppCategoryDao appCategoryDao;
+
+    @Autowired
+    private AppGroupDao appGroupDao;
 
     @Autowired
     private ProjectJsonService projectJsonService;
@@ -69,6 +74,26 @@ public class AppGroupListController {
         AppCategory appCategory = appCategoryDao.read(appCategoryId);
 
         List<AppGroup> appGroups = appCategory.getAppGroups();
+
+        // Check if there are additions/removals (move between groups)
+        if (appGroups.size() != idArray.size()) {
+            List<Long> groupIds = new ArrayList();
+            for (AppGroup appGroup : new ArrayList<AppGroup>(appGroups)) {
+                groupIds.add(appGroup.getId());
+                if (!idArray.contains(appGroup.getId())) {
+                    appGroups.remove(appGroup);
+                }
+            }
+            for (Long groupId : idArray) {
+                if (!groupIds.contains(groupId)) {
+                    AppGroup appGroup = appGroupDao.read(groupId);
+                    appGroup.setAppCategory(appCategory);
+                    appGroupDao.update(appGroup);
+                    appGroups.add(appGroup);
+                }
+            }
+        }
+        //
 
         Collections.sort(appGroups, new Comparator<AppGroup>(){
             @Override
