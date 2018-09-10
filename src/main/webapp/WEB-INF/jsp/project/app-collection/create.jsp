@@ -25,6 +25,18 @@
                             <c:out value="${appCategory.name}" />
                         </label><br />
                     </c:forEach>
+                    <br /><br />
+                    <c:forEach var="allProject" items="${projects}">
+                        <br /><details>
+                            <summary style="cursor: pointer;"><c:out value="${allProject.name}" /></summary>
+                            <c:forEach var="appCategory" items="${allProject.appCategories}">
+                                <input type="checkbox" name="appCategories" id="appCategory_${appCategory.id}" value="${appCategory.id}" />
+                                <label for="appCategory_${appCategory.id}">
+                                    <c:out value="${appCategory.name}" />
+                                </label><br />
+                            </c:forEach>
+                        </details>
+                    </c:forEach>
                 </div>
             </div>
             <br />

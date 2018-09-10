@@ -18,19 +18,37 @@
                 </div>
                 
                 <div class="input-field col s12">
-                    <fmt:message key="app.categories" /><br />
-                    <c:forEach var="appCategory" items="${project.appCategories}">
-                        <c:set var="isChecked" value="false" />
-                        <c:forEach var="appCollectionAppCategory" items="${appCollection.appCategories}">
-                            <c:if test="${appCollectionAppCategory.id == appCategory.id}">
-                                <c:set var="isChecked" value="true" />
+                    <c:forEach var="allProject" items="${projects}">
+                        <!-- Check if anything inside this project is used, in that case we want to default it to open -->
+                        <c:set var="isUsed" value="false" />
+                        <c:forEach var="appCategory" items="${allProject.appCategories}">
+                            <c:if test="${!isUsed}">
+                                <c:forEach var="appCollectionAppCategory" items="${appCollection.appCategories}">
+                                    <c:if test="${appCollectionAppCategory.id == appCategory.id}">
+                                        <c:set var="isUsed" value="true" />
+                                    </c:if>
+                                </c:forEach>
                             </c:if>
                         </c:forEach>
-                        <input type="checkbox" name="appCategories" id="appCategory_${appCategory.id}" value="${appCategory.id}"
-                               <c:if test="${isChecked}">checked="checked"</c:if> />
-                        <label for="appCategory_${appCategory.id}">
-                            <c:out value="${appCategory.name}" />
-                        </label><br />
+
+
+                        <br /><details <c:if test="${isUsed}">open="open"</c:if>>
+                            <summary style="cursor: pointer;"><c:out value="${allProject.name}" /></summary>
+                            <c:forEach var="appCategory" items="${allProject.appCategories}">
+                                <c:set var="isChecked" value="false" />
+                                <c:forEach var="appCollectionAppCategory" items="${appCollection.appCategories}">
+                                    <c:if test="${appCollectionAppCategory.id == appCategory.id}">
+                                        <c:set var="isChecked" value="true" />
+                                    </c:if>
+                                </c:forEach>
+
+                                <input type="checkbox" name="appCategories" id="appCategory_${appCategory.id}" value="${appCategory.id}"
+                                       <c:if test="${isChecked}">checked="checked"</c:if> />
+                                <label for="appCategory_${appCategory.id}">
+                                    <c:out value="${appCategory.name}" />
+                                </label><br />
+                            </c:forEach>
+                        </details>
                     </c:forEach>
                 </div>
             </div>

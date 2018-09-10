@@ -53,6 +53,13 @@ public class AppCollectionCreateController {
         appCollection.setProject(project);
         model.addAttribute("appCollection", appCollection);
 
+        // Add all projects for the contributor to display all available appCategories
+        Contributor contributor = (Contributor) session.getAttribute("contributor");
+        List<Project> projects = projectDao.read(contributor);
+        // For some reason projects.remove(project) doesnt work, so iterate and remove based on ID
+        for (Project p : projects) if (p.getId() == project.getId()) projects.remove(p);
+        model.addAttribute("projects", projects);
+
         return "project/app-collection/create";
     }
     

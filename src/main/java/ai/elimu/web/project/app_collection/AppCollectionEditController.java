@@ -62,6 +62,11 @@ public class AppCollectionEditController {
         List<License> licenses = licenseDao.readAll(appCollection);
         model.addAttribute("licenses", licenses);
 
+        // Add all projects for the contributor to display all available appCategories
+        Contributor contributor = (Contributor) session.getAttribute("contributor");
+        List<Project> projects = projectDao.read(contributor);
+        model.addAttribute("projects", projects);
+
         return "project/app-collection/edit";
     }
     

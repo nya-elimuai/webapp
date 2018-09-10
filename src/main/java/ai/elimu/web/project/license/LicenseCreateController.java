@@ -19,14 +19,19 @@ import ai.elimu.util.SlackApiHelper;
 import ai.elimu.web.context.EnvironmentContextLoaderListener;
 import java.net.URLEncoder;
 import java.util.List;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.InitBinder;
 
 @Controller
 @RequestMapping("/project/{projectId}/app-collection/{appCollectionId}/license/create")
@@ -62,6 +67,8 @@ public class LicenseCreateController {
         License license = new License();
         license.setAppCollection(appCollection);
         license.setLicenseNumber(LicenseGenerator.generateLicenseNumber());
+        license.setLicenseExpiration(new Date(System.currentTimeMillis() + 31536000000L)); // 1 year default
+        
         model.addAttribute("license", license);
 
         return "project/license/create";
@@ -120,6 +127,16 @@ public class LicenseCreateController {
             
             return "redirect:/project/" + project.getId() + "/app-collection/edit/" + appCollection.getId();
         }
+    }
+
+    @InitBinder
+    private void dateBinder(WebDataBinder binder) {
+        //The date format to parse or output your dates
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        //Create a new CustomDateEditor
+        CustomDateEditor editor = new CustomDateEditor(dateFormat, true);
+        //Register it as custom editor for the Date type
+        binder.registerCustomEditor(Date.class, editor);
     }
     
     /**

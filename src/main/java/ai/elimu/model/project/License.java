@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 import ai.elimu.model.BaseEntity;
 import javax.persistence.OneToOne;
+import java.util.Date;
 
 @Entity
 public class License extends BaseEntity {
@@ -16,7 +17,7 @@ public class License extends BaseEntity {
     
     // TODO: maximum number of devices
     
-    // TODO: expiry date
+    private Date licenseExpiration;
     
     @NotNull
     private String firstName;
@@ -52,6 +53,14 @@ public class License extends BaseEntity {
 
     public void setAppCollection(AppCollection appCollection) {
         this.appCollection = appCollection;
+    }
+
+    public Date getLicenseExpiration() {
+        return licenseExpiration == null ? new Date() : licenseExpiration;
+    }
+
+    public void setLicenseExpiration(Date expirationTime) {
+        this.licenseExpiration = expirationTime;
     }
 
     public String getFirstName() {

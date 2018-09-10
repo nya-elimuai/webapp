@@ -2,6 +2,7 @@ package ai.elimu.rest.v1.project;
 
 import ai.elimu.dao.project.LicenseDao;
 import ai.elimu.model.project.License;
+import ai.elimu.util.DateHelper;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
@@ -40,6 +41,7 @@ public class LicenseRestController {
         if (license != null) {
             jsonObject.put("result", "success");
             jsonObject.put("appCollectionId", license.getAppCollection().getId());
+            jsonObject.put("expirationTime", DateHelper.dateToTimestamp(license.getLicenseExpiration()));
         } else {
             jsonObject.put("result", "error");
             jsonObject.put("description", "Invalid license");

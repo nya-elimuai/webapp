@@ -37,6 +37,14 @@
                     <form:label path="organization" cssErrorClass="error"><fmt:message key='organization' /></form:label>
                     <form:input path="organization" cssErrorClass="error" />
                 </div>
+
+                <div class="input-field col s12">
+                    <form:label path="licenseExpiration" cssErrorClass="error" class="active">
+                        <fmt:message key='license.expiration' />
+                    </form:label>
+                    <fmt:formatDate value="${license.licenseExpiration}" pattern="yyyy-MM-dd" var="expirationDate"/>
+                    <form:input type="date" path="licenseExpiration" value="${expirationDate}" cssErrorClass="error"/>
+                </div>
             </div>
             <br />
             
